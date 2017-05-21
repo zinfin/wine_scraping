@@ -1,0 +1,17 @@
+{
+	    "build_systems":
+    [
+
+    ],
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "path": "."
+        }
+    ],
+    "settings":
+    {
+        "python_interpreter": "/home/sandiepeters/virtualenv/anaconda/bin/python"
+    }
+}
