@@ -9,7 +9,8 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-            'http://www.owenroe.com/Our-Wine/White-Wines'
+            'http://www.owenroe.com/Our-Wine/White-Wines',
+	   'http://www.foxfarmvineyards.com/shop/'
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -47,7 +48,7 @@ class QuotesSpider(scrapy.Spider):
     def getWineDivs(self, soup, classname):
         wines = soup.find_all(attrs={"class":'%s' % classname})
         for wine in wines:
-            print wine
+            print wine.string
     # Load the file of grape varietals, returning a list
     def loadVarietals(self):
         wineFile = "wine_scrapy/spiders/grape_varietals"

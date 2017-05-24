@@ -1,0 +1,12 @@
+﻿Steps for setting up:
+
+1.  Install pip
+2.  https://github.com/donnemartin/haxor-news/issues/54
+3. Sudo pip install virtualenv
+4. Create a virtual environment in /home/sandiepeters/virtualenv and called it virtualenv (virtualenv virtualenv)
+5.  Activate the virtual environment  :  source activate
+6.  Install scrapy within virtualenv
+7.  Install beautiful soup python lib
+8. To exit virtual environment use “deactivate”
+
+9. On Ubuntu, activate virtualenv:  source activate scrapyenv
