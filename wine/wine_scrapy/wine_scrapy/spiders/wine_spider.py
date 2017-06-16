@@ -2,19 +2,16 @@
 import scrapy
 from bs4 import BeautifulSoup
 import re
+import json
 
 
 class QuotesSpider(scrapy.Spider):
     name = "wine"
 
     def start_requests(self):
-        urls = [
-            'http://patriciagreencellars.orderport.net/wines/2016-Pinot-Noir-Futures/750mL',
-            'http://www.owenroe.com/Our-Wine/White-Wines',
-            'http://www.ghosthillcellars.com/Wines/Shop-Online',
-            'http://www.foxfarmvineyards.com/shop/page/2/'
-        ]
-        for url in urls:
+        urls = self.load_urls()
+
+        for url in urls[:50]:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
@@ -37,11 +34,21 @@ class QuotesSpider(scrapy.Spider):
                                     (r'\b20[0-9]{2}\b[\w\s\.\W]+%s' % wine, re.IGNORECASE))
             if len(results) > 0:
                 for res in results:
-                    print winery, res
-                break
+                   # print winery, res
+                    yield{
+                        'winery' : winery,
+                        'wine': res,
+                        'grape': wine,
+                    }
+
+            else:
+                yield{
+                    'winery':winery,
+                    'wine' : 'None found',
+                    'grape': wine,
+                }
 
 
-        return None
 
     def find_highest_count_string(self, dict):
         highestCountStr = None
@@ -125,3 +132,22 @@ class QuotesSpider(scrapy.Spider):
             grapes.append(wine.split("\n")[0])
 
         return grapes
+
+    def load_urls(self):
+        #Load json bookmarks
+        urls = []
+        fh = open('wine_scrapy/spiders/jsonbookmarks')
+        jsondata = fh.read();
+        fh.close();
+        jsondict = json.loads(jsondata)
+        rootdict = jsondict['roots']
+        bookmarkdict = rootdict['bookmark_bar']
+        childlist = bookmarkdict['children']
+        for child in childlist:
+            name = child['name']
+            if name == 'Wineries':
+                grandchildren = child['children']
+                for grandchild in grandchildren:
+                    if grandchild['url'] is not None:
+                        urls.append(grandchild['url'])
+        return urls

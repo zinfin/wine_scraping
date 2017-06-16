@@ -11,4 +11,8 @@ import scrapy
 class WineScrapyItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+
+    winery = scrapy.Field()
+    wine = scrapy.Field()
+    grape = scrapy.Field()
     pass
